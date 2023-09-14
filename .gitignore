@@ -22,3 +22,23 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+### IntelliJ IDEA ###
+.idea/
+**___jb_tmp___
+out/
+**.iml
+*.iws
+*.iml
+*.ipr
+
+# OS X
+.DS_Store
+
+# Gradle
+build/
+.gradle
+gradle-local.properties
+!gradle-wrapper.jar
+.gradletasknamecache
+
