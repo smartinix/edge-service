@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
@@ -21,11 +20,15 @@ import reactor.core.publisher.Mono;
 
 @EnableWebFluxSecurity
 public class SecurityConfig {
+
     @Bean
-    SecurityWebFilterChain springSecurityFilterChain(
-        ServerHttpSecurity http,
-        ReactiveClientRegistrationRepository clientRegistrationRepository
-    ) {
+    ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
+        return new WebSessionServerOAuth2AuthorizedClientRepository();
+    }
+
+    @Bean
+    SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
+                                                     ReactiveClientRegistrationRepository clientRegistrationRepository) {
         return http
             .authorizeExchange(exchange -> exchange
                 .pathMatchers("/", "/*.css", "/*.js", "/favicon.ico").permitAll()
@@ -40,13 +43,9 @@ public class SecurityConfig {
             .build();
     }
 
-    private ServerLogoutSuccessHandler oidcLogoutSuccessHandler(
-        ReactiveClientRegistrationRepository clientRegistrationRepository
-    ) {
-        var oidcLogoutSuccessHandler =
-            new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
-        oidcLogoutSuccessHandler
-            .setPostLogoutRedirectUri("{baseUrl}");
+    private ServerLogoutSuccessHandler oidcLogoutSuccessHandler(ReactiveClientRegistrationRepository clientRegistrationRepository) {
+        var oidcLogoutSuccessHandler = new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
+        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
         return oidcLogoutSuccessHandler;
     }
 
@@ -60,11 +59,6 @@ public class SecurityConfig {
             }));
             return chain.filter(exchange);
         };
-    }
-
-    @Bean
-    ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
-        return new WebSessionServerOAuth2AuthorizedClientRepository();
     }
 
 }
