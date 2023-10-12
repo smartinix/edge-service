@@ -76,10 +76,8 @@ spring:
                 name: orderCircuitBreaker
   redis:
     connect-timeout: 2s
-    host: polar-redis-do-user-14762579-0.b.db.ondigitalocean.com
-    port: 25061
-    username: default
-    password: AVNS_uqRD1yCehtX6WRsgKN4
+    host: localhost
+    port: 6379
     timeout: 1s
   session:
     store-type: redis
