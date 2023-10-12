@@ -29,7 +29,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) {
+    SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
+                                                     ReactiveClientRegistrationRepository clientRegistrationRepository) {
         return http
             .authorizeExchange(exchange -> exchange
                 .pathMatchers("/actuator/**").permitAll()
@@ -62,4 +63,5 @@ public class SecurityConfig {
             return chain.filter(exchange);
         };
     }
+
 }
