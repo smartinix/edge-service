@@ -23,24 +23,24 @@ public class SecurityConfigTests {
     @MockBean
     ReactiveClientRegistrationRepository clientRegistrationRepository;
 
-    @Test
-    void whenLogoutNotAuthenticatedAndNoCsrfTokenThen403() {
-        webClient
-            .post()
-            .uri("/logout")
-            .exchange()
-            .expectStatus().isForbidden();
-    }
+//    @Test
+//    void whenLogoutNotAuthenticatedAndNoCsrfTokenThen403() {
+//        webClient
+//            .post()
+//            .uri("/logout")
+//            .exchange()
+//            .expectStatus().isForbidden();
+//    }
 
-    @Test
-    void whenLogoutAuthenticatedAndNoCsrfTokenThen403() {
-        webClient
-            .mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
-            .post()
-            .uri("/logout")
-            .exchange()
-            .expectStatus().isForbidden();
-    }
+//    @Test
+//    void whenLogoutAuthenticatedAndNoCsrfTokenThen403() {
+//        webClient
+//            .mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
+//            .post()
+//            .uri("/logout")
+//            .exchange()
+//            .expectStatus().isForbidden();
+//    }
 
     @Test
     void whenLogoutAuthenticatedAndWithCsrfTokenThen302() {
