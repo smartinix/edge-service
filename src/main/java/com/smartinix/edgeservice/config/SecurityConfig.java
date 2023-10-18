@@ -14,8 +14,10 @@ import org.springframework.security.oauth2.client.web.server.WebSessionServerOAu
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
+import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestHandler;
 import org.springframework.web.server.WebFilter;
 import reactor.core.publisher.Mono;
 
@@ -43,6 +45,7 @@ public class SecurityConfig {
             .oauth2Login(Customizer.withDefaults())
             .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository)))
             .csrf((csrf) -> csrf
+                .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
                 .csrfTokenRequestHandler(new ServerCsrfTokenRequestAttributeHandler()))
             .build();
     }
